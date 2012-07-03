@@ -1,23 +1,18 @@
-require 'bundler'
-require 'spec/rake/spectask'
-require 'rake/rdoctask'
+require "bundler/setup"
+require "rspec/core/rake_task"
+require "rdoc/task"
 
 Bundler::GemHelper.install_tasks
 
-desc 'Default: run specs.'
+RSpec::Core::RakeTask.new do |t|
+  t.rspec_opts = "--color --format progress"
+end
+
+RDoc::Task.new do |t|
+  t.rdoc_dir = "rdoc"
+  t.title    = "DelegatesAttributesTo"
+  t.options += ["--line-numbers", "--inline-source"]
+  t.rdoc_files.include("README", "lib/**/*.rb")
+end
+
 task :default => :spec
-
-desc 'Run the specs'
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_opts = ['--colour --format progress --loadby mtime --reverse']
-  t.spec_files = FileList['spec/**/*_spec.rb']
-end
-
-desc 'Generate documentation for the delegate_belongs_to plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'DelegatesAttributesTo'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
