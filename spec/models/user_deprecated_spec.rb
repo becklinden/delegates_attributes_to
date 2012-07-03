@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
 class UserDeprecatedWithPrefix < ActiveRecord::Base
-  set_table_name 'users'
+  self.table_name = "users"
 end
 
 describe DelegatesAttributesTo, 'deprecated #delegates_attributes_to' do

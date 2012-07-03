@@ -75,7 +75,7 @@ describe DelegatesAttributesTo, 'with dirty delegations' do
   
     it "should return nil as lastname" do
       @user.firstname_will_change!
-      @user.firstname_change.should == ['John', 'John']
+      @user.firstname_change.should == [nil, 'John']
     end
   end
 

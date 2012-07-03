@@ -1,12 +1,12 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
 class UserDelegationWithPrefix < ActiveRecord::Base
-  set_table_name 'users'
-  
+  self.table_name = "users"
+
   belongs_to :contact
   delegate_attributes :to => :contact, :prefix => true
 
-  has_one :profile
+  has_one :profile, :foreign_key => :user_id
   delegate_attributes :to => :profile, :prefix => 'account'
 end
 
@@ -103,7 +103,7 @@ describe DelegatesAttributesTo, 'delegation with' do
   
       it "should return nil as lastname" do
         @user.contact_firstname_will_change!
-        @user.contact_firstname_change.should == ['John', 'John']
+        @user.contact_firstname_change.should == [nil, 'John']
       end
     end
   end
@@ -191,7 +191,7 @@ describe DelegatesAttributesTo, 'delegation with' do
   
       it "should return nil as lastname" do
         @user.account_about_will_change!
-        @user.account_about_change.should == ['John', 'John']
+        @user.account_about_change.should == [nil, 'John']
       end
     end
   end
